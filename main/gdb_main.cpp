@@ -632,7 +632,9 @@ GDB::handle_q_packet(char *packet, int len)
 			gdb_putpacketz("E01");
 			return;
 		}
-		gdb_putpacket_f("C%lx", generic_crc32(cur_target, addr, alen));
+		uint32_t crc;
+		generic_crc32(cur_target, &crc, addr, alen);
+		gdb_putpacket_f("C%lx", crc);
 
 	} else {
 		DEBUG_GDB("*** Unsupported packet: %s\n", packet);
